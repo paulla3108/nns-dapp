@@ -58,6 +58,9 @@ export default defineConfig(
       globals: true,
       watch: false,
       setupFiles: ["./vitest.setup.ts"],
+      sequence: {
+        hooks: 'list'
+      },
       deps: {
         optimizer: {
           ssr: {
