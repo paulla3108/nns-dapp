@@ -59,7 +59,7 @@ export default defineConfig(
       watch: false,
       setupFiles: ["./vitest.setup.ts"],
       sequence: {
-        hooks: 'list',
+        hooks: "list",
       },
       deps: {
         optimizer: {
