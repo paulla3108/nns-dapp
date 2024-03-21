@@ -23,6 +23,10 @@
   export let nsFunctions: SnsNervousSystemFunction[] | undefined;
   export let disableInfiniteScroll = false;
   export let loadingNextPage = false;
+
+  $: console.log("authSignedInStore", $authSignedInStore);
+  $: console.log("proposals", proposals);
+  $: console.log("includeBallots", includeBallots);
 </script>
 
 <TestIdWrapper testId="sns-proposal-list-component">
