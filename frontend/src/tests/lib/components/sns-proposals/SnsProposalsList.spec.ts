@@ -12,12 +12,22 @@ import { allowLoggingInOneTestForDebugging } from "$tests/utils/console.test-uti
 import { runResolvedPromises } from "$tests/utils/timers.test-utils";
 import type { SnsProposalData } from "@dfinity/sns";
 import { SnsProposalDecisionStatus } from "@dfinity/sns";
-import { render } from "@testing-library/svelte";
+import { render, cleanup } from "@testing-library/svelte";
 import { tick } from "svelte";
 
 describe("SnsProposalsList", () => {
+  let prevContainer;
+
   const renderComponent = async (props) => {
+    cleanup();
     const { container } = render(SnsProposalsList, { props });
+    if (container === prevContainer) {
+      console.log('dskloetx container === prevContainer');
+    } else {
+      console.log('dskloetx container !== prevContainer');
+    }
+    console.log('dskloetx container.innerHTML', container.innerHTML);
+    prevContainer = container;
     await runResolvedPromises();
     return SnsProposalListPo.under(new JestPageObjectElement(container));
   };
@@ -166,6 +176,7 @@ describe("SnsProposalsList", () => {
     });
 
     it.only('should display "Actionable not supported" banner', async () => {
+      console.log('dskloetx test 1');
       const po = await renderComponent({
         proposals: [],
         includeBallots: false,
@@ -173,21 +184,29 @@ describe("SnsProposalsList", () => {
         actionableSelected: true,
         nsFunctions: [],
       });
+    //});
+
+    //it.only('should display "Actionable not supported" banner', async () => {
+    /*
+      console.log('dskloetx test 2');
       expect(await po.getActionableNotSupportedBanner().isPresent()).toBe(true);
       expect(await po.getActionableNotSupportedBanner().getTitleText()).toBe(
         "sns-name doesn't yet support actionable proposals."
       );
+      console.log('dskloetx test 3');
+      */
 
       await tick();
       await tick();
       await tick();
       await tick();
       await waitForMilliseconds(1000);
+      console.log('dskloetx test 4');
 
       actionableProposalsSegmentStore.resetForTesting();
       resetIdentity();
 
-      console.log(123);
+      console.log('dskloetx test 5');
 
       const poTwo = await renderComponent({
         proposals: [],
@@ -197,14 +216,19 @@ describe("SnsProposalsList", () => {
         nsFunctions: [],
       });
 
-      console.log(321);
+      console.log('dskloetx test 6');
+
       await waitForMilliseconds(1000);
+
+      console.log('dskloetx test 7');
 
       console.log(await poTwo.root.innerHtmlForDebugging());
 
       expect(await poTwo.getActionableNotSupportedBanner().isPresent()).toBe(
         false
       );
+
+      console.log('dskloetx test 8');
     });
 
     it("should display actionable proposals", async () => {

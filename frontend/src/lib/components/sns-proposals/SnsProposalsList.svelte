@@ -9,7 +9,6 @@
   import ListLoader from "../proposals/ListLoader.svelte";
   import SnsProposalsFilters from "./SnsProposalsFilters.svelte";
   import { ENABLE_VOTING_INDICATION } from "$lib/stores/feature-flags.store";
-  import { fade } from "svelte/transition";
   import TestIdWrapper from "$lib/components/common/TestIdWrapper.svelte";
   import { authSignedInStore } from "$lib/derived/auth.derived";
   import ActionableProposalsSignIn from "$lib/components/proposals/ActionableProposalsSignIn.svelte";
@@ -24,6 +23,8 @@
   export let disableInfiniteScroll = false;
   export let loadingNextPage = false;
 
+  $: console.log("ENABLE_VOTING_INDICATION", $ENABLE_VOTING_INDICATION);
+  $: console.log("actionableSelected", actionableSelected);
   $: console.log("authSignedInStore", $authSignedInStore);
   $: console.log("proposals", proposals);
   $: console.log("includeBallots", includeBallots);
@@ -33,7 +34,7 @@
   <SnsProposalsFilters />
 
   {#if !$ENABLE_VOTING_INDICATION || !actionableSelected}
-    <div in:fade data-tid="all-proposal-list">
+    <div data-tid="all-proposal-list">
       {#if proposals === undefined}
         <LoadingProposals />
       {:else if proposals.length === 0}
@@ -55,16 +56,27 @@
   {/if}
 
   {#if $ENABLE_VOTING_INDICATION && actionableSelected}
-    <div in:fade data-tid="actionable-proposal-list">
+dskloetx-list_1 {console.log('dskloetx template 1', includeBallots)}
+    <div data-tid="actionable-proposal-list">
+dskloetx-list_2
       {#if !$authSignedInStore}
+dskloetx-list_3
         <ActionableProposalsSignIn />
+dskloetx-list_4
       {:else if isNullish(proposals)}
+dskloetx-list_5
         <LoadingProposals />
+dskloetx-list_6
       {:else if includeBallots === false}
+dskloetx-list_7 {includeBallots} {console.log('dskloetx template 7', includeBallots)}
         <ActionableProposalsNotSupported {snsName} />
+dskloetx-list_8
       {:else if proposals.length === 0}
+dskloetx-list_9
         <ActionableProposalsEmpty />
+dskloetx-list_10
       {:else}
+dskloetx-list_11
         <InfiniteScroll layout="grid" disabled>
           {#each proposals as proposalData (fromNullable(proposalData.id)?.id)}
             <SnsProposalCard {proposalData} {nsFunctions} />
