@@ -71,7 +71,7 @@ jobs:
       - name: Run Tests
         shell: bash
         run: |
-          cargo test --all-targets --all-features
+          RUSTFLAGS="-D warnings" cargo test --all-targets --all-features
         env:
           RUST_BACKTRACE: 1
       - name: Lint rustdoc
